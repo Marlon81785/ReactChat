@@ -57,7 +57,12 @@ export default class Contatos extends Component{
             renderItem={({item})=>
               (
                 <View style={styles.contact}>
-                  <TouchableOpacity onPress={()=>alert(item.phoneNumbers[0].number)}>
+                  <TouchableOpacity onPress={()=>//alert(item.phoneNumbers[0].number)//
+                    this.props.navigation.navigate('ChatApp', {
+                      phone: item.phoneNumbers[0].number,
+                      name: item.name,
+                    })
+                  }>
                     <View style={styles.contact}>
                       <Image
                         style={styles.foto}

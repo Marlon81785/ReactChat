@@ -2,6 +2,7 @@ import { RELATIONSHIPS } from 'expo-contacts';
 import React, { Component } from 'react';
 import {TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
@@ -9,92 +10,42 @@ export default class ChatApp extends Component{
     state = {
         count: null,//contador de numero de mensagens
         messageInputTemp: null, //usuario digitar ficara aqui temporariamente
+        contato: {
+            'phoneNumber': this.props.navigation.state.params.phone,
+            'nameContact': this.props.navigation.state.params.name,
+            'imageContact': 'imageee data',
+
+        },
         contacts: [
+            
             {
                 'id': '0',
-                'nameContact': 'Fulano de Tal',
-                'imageContact': 'imageee data'
-            },
-            {
-                'id': '1',
                 'type': 'received',
-                'name': 'mensagem 1 da conversa'
+                'name': 'Bão ?',
+                'statusEnvio': 'enviada',
+                'statusDestino': 'recebido',
             },
+            
+            /*exempple the structure
             {
                 'id': '2',
                 'type': 'send',
-                'name': 'mensagem 2 etc'
+                'name': 'mensagem 2 etc',
+                'statusEnvio': 'enviada',
+                'statusDestino': 'not',
             },
-            {
-                'id': '3',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '4',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '5',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '6',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '7',
-                'type': 'received',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '8',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '9',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '10',
-                'type': 'received',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '11',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '12',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '13',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '14',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
-            {
-                'id': '15',
-                'type': 'send',
-                'name': 'boris jhonson'
-            },
+
+            */
+            
             
         ]
     }
 
     constructor(props) {
       super(props);
+      this.getConversation(this.state.contato.phoneNumber)
+      
+      
       
     }
 
@@ -102,6 +53,16 @@ export default class ChatApp extends Component{
         this.list.scrollToEnd({animated: true})
     
         
+    }
+
+    StoreConversation = async (value, key) => { //key is phoone number, key its conversation
+        try {
+          const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem("@".concat(key), jsonValue)
+        } catch (e) {
+          // saving error
+          console.log("erro ao salvar")
+        }
     }
 
     getMessageFromTextInputUser(){
@@ -113,34 +74,73 @@ export default class ChatApp extends Component{
                 var newMsg = {
                     'id': cont.toString(),
                     'type': 'send',
-                    'name': this.state.messageInputTemp 
+                    'name': this.state.messageInputTemp,
+                    'statusEnvio': 'enviada',
+                    'statusDestino': 'recebido',
                 }
         
         
         
                 this.setState({
                     contacts: this.state.contacts.concat(newMsg)
-                    
+
                 })
 
                 this.onLayout()
                 this.setState({messageInputTemp: null})
 
+                
+
+
 
             }
-        
-
-        
-
 
     }
+
+    //verify if existics data from phone number valid in use
+    //key from phone number is : '@phoneSaveTeste4
+    getConversation = async (key) => {
+
+        try {
+            const jsonValue = await AsyncStorage.getItem("@".concat(key))
+
+            if(jsonValue != null){
+                console.log("conversa encontrada para o numero: ")
+                console.log(this.state.contato.phoneNumber)//exemplo de como acessar
+                
+                console.log(JSON.parse(jsonValue))
+                this.setState({contacts: JSON.parse(jsonValue)})
+                
+            }
+       
+        } catch(e) {
+            // error reading value
+            console.log('not saved conversation for phone number')
+        }
+    }
+
+    clearAll = async () => {
+        try {
+          await AsyncStorage.clear()
+        } catch(e) {
+          // clear error
+        }
+      
+        console.log('Done.')
+      }
     
     
     
     
     render(){
-        
         console.log(this.state.contacts)
+        setTimeout(()=>{
+            this.onLayout()
+            this.StoreConversation(this.state.contacts, this.state.contato.phoneNumber)
+        },1000)
+
+        
+
       return(
             <View style={styles.masterView}>
               <View style={styles.contato}>
@@ -149,7 +149,8 @@ export default class ChatApp extends Component{
                     source={{uri: btnContatosImage}}
                 >
                 </Image>
-                <Text style={styles.contatoNome}>Fulano de Tal</Text>
+                <Text style={styles.contatoNome}>{this.state.contato.nameContact}</Text>
+                <Text>   {this.state.contato.phoneNumber}</Text>
               </View>
 
                 <SafeAreaView onLayout={() => this.onLayout()} style={styles.container}>
