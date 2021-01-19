@@ -71,7 +71,7 @@ export default class Contatos extends Component{
                       </Image>
                       <View>
                         <Text style={{fontSize: 30, marginLeft: 9}}>{item.name}</Text>
-                        <Text style={styles.phoneNumber}>{item.phoneNumbers[0].number}</Text>
+                        <Text style={styles.phoneNumber}>{/*numero dos contatos*/}</Text>
 
                       </View>
                       
