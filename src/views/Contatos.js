@@ -10,13 +10,17 @@ var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCA
 
 
 export default class Contatos extends Component{
-    state = {
-        contacts: []
-    }
+  
+    
 
-    constructor(props) {
-      super(props);
-      
+    constructor({route, navigation }) {
+      super();
+
+      this.state = {
+        navigation: navigation,
+        contacts: []
+      }
+
       this.getAllContacts()
       this.defaultPhoto()
     }
@@ -58,7 +62,7 @@ export default class Contatos extends Component{
               (
                 <View style={styles.contact}>
                   <TouchableOpacity onPress={()=>//alert(item.phoneNumbers[0].number)//
-                    this.props.navigation.navigate('ChatApp', {
+                    this.state.navigation.navigate('ChatApp', {
                       phone: item.phoneNumbers[0].number,
                       name: item.name,
                     })

@@ -7,12 +7,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
 export default class ChatApp extends Component{
-    state = {
+
+    constructor({route, navigation}) {
+      super();
+      const { phone, name } = route.params;
+      this.state = {
+        navigation: navigation,
         count: null,//contador de numero de mensagens
         messageInputTemp: null, //usuario digitar ficara aqui temporariamente
         contato: {
-            'phoneNumber': this.props.navigation.state.params.phone,
-            'nameContact': this.props.navigation.state.params.name,
+            'phoneNumber': phone,
+            'nameContact': name,
             'imageContact': 'imageee data',
 
         },
@@ -41,9 +46,7 @@ export default class ChatApp extends Component{
         ]
     }
 
-    constructor(props) {
-      super(props);
-      this.getConversation(this.state.contato.phoneNumber)
+    this.getConversation(this.state.contato.phoneNumber)
       
       
       

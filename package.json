@@ -1,36 +1,33 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
-  },
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.13.2",
-    "@react-native-community/masked-view": "0.1.6",
-    "expo": "~40.0.0",
-    "expo-asset": "^8.2.1",
-    "expo-contacts": "^8.6.0",
-    "expo-image-picker": "^9.2.1",
-    "expo-status-bar": "~1.0.3",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
-    "react-native-contacts": "^6.0.3",
-    "react-native-gesture-handler": "~1.6.0",
-    "react-native-image-picker": "^3.1.3",
-    "react-native-phone-input": "^0.2.4",
-    "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "~2.2.0",
-    "react-native-web": "~0.13.12",
-    "react-navigation": "^4.3.7",
-    "react-navigation-stack": "^2.3.11",
-    "undefined": "@expo/snack-static/react-native-logo.png"
-  },
-  "devDependencies": {
-    "@babel/core": "~7.9.0"
-  },
-  "private": true
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+        "start": "expo start",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
+        "web": "expo start --web",
+        "eject": "expo eject"
+    },
+    "dependencies": {
+        "@react-native-async-storage/async-storage": "^1.15.5",
+        "@react-native-community/masked-view": "^0.1.11",
+        "@react-navigation/native": "^5.9.4",
+        "@react-navigation/stack": "^5.14.5",
+        "expo": "~42.0.1",
+        "expo-contacts": "^9.2.5",
+        "expo-image-picker": "^10.2.2",
+        "expo-status-bar": "~1.0.4",
+        "react": "16.13.1",
+        "react-dom": "16.13.1",
+        "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-phone-input": "^1.0.10",
+        "react-native-reanimated": "^2.2.0",
+        "react-native-safe-area-context": "^3.2.0",
+        "react-native-screens": "^3.4.0",
+        "react-native-web": "~0.13.12"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.9.0"
+    },
+    "private": true
 }

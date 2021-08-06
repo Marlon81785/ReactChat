@@ -7,12 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default class ReceberFoto extends Component {
-    constructor(props){
-        super(props);
+    constructor( { route, navigation }){
+        super();
+        const { valid, type, value, publicName, publicPhoto } = route.params;
         this.state = {
-            valid: this.props.navigation.state.params.valid,
-            type: this.props.navigation.state.params.type,
-            value: this.props.navigation.state.params.value,
+            navigation: navigation,
+            valid: valid,
+            type: type,
+            value: value,
             publicName: '',// esta vazio porque logico ele sta na tela de inserir o nome e tals
             publicPhoto: ''// esta vazio porque asincronamente esta vindo a imagem default para este state e o usuario ainda pode altereala
         }
@@ -72,7 +74,7 @@ export default class ReceberFoto extends Component {
             this.storeData(this.state)
             
             
-            this.props.navigation.navigate('LogadoApp', {
+            this.state.navigation.navigate('LogadoApp', {
                 valid: this.state.valid,
                 type: this.state.type,
                 value: this.state.value,

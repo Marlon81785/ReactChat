@@ -21,14 +21,16 @@ const DATA = [
 
 
 export default class LogadoApp extends Component{
-    constructor(props) {
-      super(props);
+    constructor({ route, navigation }) {
+      super();
+      const { valid, type, value, publicName, publicPhoto } = route.params;
       this.state = {
-        valid: this.props.navigation.state.params.valid,
-        type: this.props.navigation.state.params.type,
-        value: this.props.navigation.state.params.value,
-        publicName: this.props.navigation.state.params.publicName,
-        publicPhoto: this.props.navigation.state.params.publicPhoto,
+        navigation: navigation,
+        valid: valid,
+        type: type,
+        value: value,
+        publicName: publicName,
+        publicPhoto: publicPhoto,
 
       }
       this.verificarSeTemNome()
@@ -63,7 +65,7 @@ export default class LogadoApp extends Component{
               if(JSON.parse(jsonValue).publicName == undefined || JSON.parse(jsonValue).publicName == ""){
                 console.log('not saved public name')
                 //jogar para tela de captura e salvamento do nome e foto
-                this.props.navigation.navigate('ReceberFoto', {
+                this.state.navigation.navigate('ReceberFoto', {
                   valid: this.state.valid,
                   type: this.state.type,
                   value: this.state.value,
@@ -82,7 +84,7 @@ export default class LogadoApp extends Component{
           // error reading value
           console.log('not saved public name')
           //jogar para tela de captura e salvamento do nome e foto
-          this.props.navigation.navigate('ReceberFoto', {
+          this.state.navigation.navigate('ReceberFoto', {
             valid: this.state.valid,
             type: this.state.type,
             value: this.state.value,
@@ -114,7 +116,7 @@ export default class LogadoApp extends Component{
               )}
             />
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Contatos')} style={styles.btnContatosImage}>
+            <TouchableOpacity onPress={() => this.state.navigation.navigate('Contatos')} style={styles.btnContatosImage}>
               <Image
               style={{width: 70, height: 70}}
                 source={{uri: btnContatosImage}}

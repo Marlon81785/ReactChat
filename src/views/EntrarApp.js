@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Button, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PhoneInput from "react-native-phone-input";
 
 export default class EntrarApp extends Component {
-  constructor() {
+  constructor({ route, navigation }) {
     super();
-    //this.storeData(null) REMOVE ! THIS IS FOR TEST
+    this.storeData(null) //REMOVE ! THIS IS FOR TEST
     this.getData()
 
     this.state = {
+      navigation: navigation,
       valid: "",
       type: "",
       value: "",
@@ -69,7 +70,7 @@ export default class EntrarApp extends Component {
     });
 
     console.log(this.state)
-    this.props.navigation.navigate('ReceberCodigoConfirmar', {
+    this.state.navigation.navigate('ReceberCodigoConfirmar', {
       valid: this.phone.isValidNumber(),
       type: this.phone.getNumberType(),
       value: this.phone.getValue()
@@ -101,7 +102,7 @@ export default class EntrarApp extends Component {
   render() {
     
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text>Não é seu país? clique e altere</Text>
         <PhoneInput
           value=" "
@@ -128,7 +129,7 @@ export default class EntrarApp extends Component {
           }
         >
         </Button>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -136,7 +137,7 @@ export default class EntrarApp extends Component {
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    //alignItems: "center",
     padding: 20,
     paddingTop: 40
   },

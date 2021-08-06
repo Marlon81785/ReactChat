@@ -1,6 +1,6 @@
-import React, { useCallback, useState, Component } from 'react';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Contatos from './src/views/Contatos';
 
 
@@ -15,9 +15,10 @@ import ReceberCodigoConfirmar from "./src/views/ReceberCodigoConfirmar";
 import ChatApp from "./src/views/ChatApp";
 import ReceberFoto from './src/views/ReceberFoto';
 
-
+const Stack = createStackNavigator();
 
 //rotas de navegação
+/*
 const AppNavigator = createStackNavigator(
   {
     EntrarApp: {
@@ -51,12 +52,23 @@ const AppNavigator = createStackNavigator(
   }
 );
 const AppContainer = createAppContainer (AppNavigator);
+*/
 
-export default class App extends Component {
-  render() {
-    return <AppContainer/>;
-      
-  }
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="EntrarApp" component={EntrarApp} />
+        <Stack.Screen name="LogadoApp" component={LogadoApp} />
+        <Stack.Screen name="ReceberCodigoConfirmar" component={ReceberCodigoConfirmar} />
+        <Stack.Screen name="ReceberFoto" component={ReceberFoto} />
+        <Stack.Screen name="Contatos" component={Contatos} />
+        <Stack.Screen name="ChatApp" component={ChatApp} />
+        
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 
