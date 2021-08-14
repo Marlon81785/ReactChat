@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
+import { Text, View, Button } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { styles } from "./Styles/ReceberCodigoConfirmarStyles";
 
 
 export default class ReceberCodigoConfirmar extends Component {
     constructor({ route, navigation }){
         super();
-        const { valid, type, value, publicName, publicPhoto } = route.params;
+        const { value, publicName, publicPhoto } = route.params;
         this.state = {
             navigation: navigation,
-            valid: valid,
-            type: type,
             value: value,
             publicName: '',
             publicPhoto: '',
@@ -37,8 +36,6 @@ export default class ReceberCodigoConfirmar extends Component {
             try{
                 this.storeData(this.state)
                 this.state.navigation.navigate('LogadoApp', {
-                    valid: this.state.valid,
-                    type: this.state.type,
                     value: this.state.value,
                     publicName: this.state.publicName,
                     publicPhoto: this.state.publicPhoto,
@@ -47,8 +44,6 @@ export default class ReceberCodigoConfirmar extends Component {
             }catch{
                 this.storeData(this.state)
                 this.state.navigation.navigate('LogadoApp', {
-                    valid: this.state.valid,
-                    type: this.state.type,
                     value: this.state.value,
                     publicName: this.state.publicName,
                     publicPhoto: this.state.publicPhoto,
@@ -63,14 +58,18 @@ export default class ReceberCodigoConfirmar extends Component {
     }
 
     render(){
-        this.validateSecretCode()//remover isso esta passando na autenticação de usuario
+        //this.validateSecretCode()//remover isso esta passando na autenticação de usuario
+       
         return (
             <View style={styles.container}>
+                <Text>Validando o número: {this.state.value}</Text>
                 <Text>Insira o código que recebeu por SMS</Text>
                 <TextInput
                     style={styles.inputStyle}
                     autoFocus={true}
                     keyboardType="numeric"
+                    placeholder="---"
+ 
                 >
                     
                 </TextInput>
@@ -80,7 +79,9 @@ export default class ReceberCodigoConfirmar extends Component {
                         title='Continuar'
                         onPress=
                         {
-                            () => this.state.navigation.navigate('LogadoApp')
+                            () => this.state.navigation.navigate('ReceberFoto', {
+                                value: this.state.value
+                            })
                         }
                     >
                     </Button>
@@ -92,18 +93,3 @@ export default class ReceberCodigoConfirmar extends Component {
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      padding: 20,
-      paddingTop: 40
-    },
-    inputStyle: {
-        fontSize: 40
-    },
-    viewDoBtn: {
-        top: 60
-    },
-
-});

@@ -1,29 +1,21 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, Button, TextInput } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PhoneInput from "react-native-phone-input";
+
+import { styles } from "./Styles/EntrarStyles";
 
 export default class EntrarApp extends Component {
   constructor({ route, navigation }) {
     super();
-    this.storeData(null) //REMOVE ! THIS IS FOR TEST
+    //this.storeData(null) //REMOVE ! THIS IS FOR TEST
     this.getData()
 
     this.state = {
       navigation: navigation,
-      valid: "",
-      type: "",
       value: "",
-      publicName: '',
-      publicPhoto: '',
     };
     
 
-    this.updateInfo = this.updateInfo.bind(this);
-    this.renderInfo = this.renderInfo.bind(this);
-
-    
-    
   }
 
   //storing information this phone """""" NOT USED IN THIS PAGE """" TESTER
@@ -43,15 +35,20 @@ export default class EntrarApp extends Component {
     try {
       const jsonValue = await AsyncStorage.getItem('@phoneSaveTeste4')
       if(jsonValue != null){
-        console.log("Usuario valido encontrado")
-        console.log(JSON.parse(jsonValue))//exemplo de como acessar
+        //console.log("Usuario valido encontrado")
+        //console.log(JSON.parse(jsonValue))//exemplo de como acessar
+        console.log("-------------------------Entrar APP Screen---------------------------")
+        console.log('Salvo no aparelho localmente')
+        console.log('number -> ' + JSON.parse(jsonValue).value + '\n')
+        console.log('name -> ' + JSON.parse(jsonValue).publicName + '\n')
+        console.log('photo -> ' + JSON.parse(jsonValue).publicPhoto + '\n')
+        console.log("-------------------------------END----------------------------------")
         this.props.navigation.navigate('LogadoApp', {
-          valid: JSON.parse(jsonValue).valid,
-          type: JSON.parse(jsonValue).type,
           value: JSON.parse(jsonValue).value,
-          publicName: '',
-          publicPhoto: ''
+          publicName: JSON.parse(jsonValue).publicName,
+          publicPhoto: JSON.parse(jsonValue).publicPhoto
         }); 
+        
       }
       //return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch(e) {
@@ -59,119 +56,30 @@ export default class EntrarApp extends Component {
       console.log('not saved phone number')
     }
   }
-  
 
+  confirmarTelefone() {
 
-  updateInfo() {
-    this.setState({
-      valid: this.phone.isValidNumber(),
-      type: this.phone.getNumberType(),
-      value: this.phone.getValue()
-    });
-
-    console.log(this.state)
     this.state.navigation.navigate('ReceberCodigoConfirmar', {
-      valid: this.phone.isValidNumber(),
-      type: this.phone.getNumberType(),
-      value: this.phone.getValue()
+      value: '31999999999'
     })
   }
-
-  renderInfo() {
-    if (this.state.value) {
-      return (
-        <View style={styles.info}>
-          <Text>
-            Is Valid:{" "}
-            <Text style={{ fontWeight: "bold" }}>
-              {this.state.valid.toString()}
-            </Text>
-          </Text>
-          <Text>
-            Type: <Text style={{ fontWeight: "bold" }}>{this.state.type}</Text>
-          </Text>
-          <Text>
-            Value:{" "}
-            <Text style={{ fontWeight: "bold" }}>{this.state.value}</Text>
-          </Text>
-        </View>
-      );
-    }
-  }
-
+  
   render() {
     
     return (
-      <ScrollView style={styles.container}>
-        <Text>Não é seu país? clique e altere</Text>
-        <PhoneInput
-          value=" "
-          style={styles.phoneContainer}
-          flagStyle={styles.phoneImage}
-          textProps={styles.phoneText}
-          initialCountry="br"
-          ref={ref => {
-            this.phone = ref;
-            
-          }}
+      <View style={styles.container}>
+        <Text>Insira seu número de telefone</Text>
+        <TextInput style={styles.input}
+          placeholder='Ex.:  31999999999'
         />
-
-        <TouchableOpacity onPress={this.updateInfo} style={styles.button}>
-          <Text>Get Info</Text>
-        </TouchableOpacity>
-
-        {this.renderInfo()}
-        <Button 
+        <Button
           title='Continuar'
-          onPress=
-          {
-            () => this.updateInfo()//
-          }
-        >
-        </Button>
-      </ScrollView>
+          onPress={ ()=> this.confirmarTelefone() }
+        />
+        
+      </View>
     );
   }
 }
 
-let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //alignItems: "center",
-    padding: 20,
-    paddingTop: 40
-  },
-  info: {
-    // width: 200,
-    borderRadius: 5,
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    marginTop: 20
-  },
-  button: {
-    marginTop: 20,
-    padding: 10
-  },
-  phoneImage: {
-    flex: 1,
-    marginLeft: 30,
-    marginRight: 30,
-    width: 300,
-    height: 120,
-    borderRadius: 30,
-    borderWidth: 3,
-    borderColor: 'blue'
-  },
-  phoneText: {
-    flex:1,
-    fontSize: 20,
-    borderBottomWidth: 1,
-    
-    
-  },
-  phoneContainer: {
-    flex: 1,
-    flexDirection: "column",
-    flexWrap: "wrap"
-  }
-});
+

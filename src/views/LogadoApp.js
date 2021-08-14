@@ -1,7 +1,8 @@
-import React, { useCallback, useState, Component } from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image } from 'react-native'
+import React, { Component } from 'react';
+import {TouchableOpacity, Text, View, Button, FlatList, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Asset } from 'expo-asset';
+import { styles } from './Styles/LogadoAppStyles';
 
 var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
@@ -18,22 +19,20 @@ const DATA = [
 
 
 
-
-
 export default class LogadoApp extends Component{
     constructor({ route, navigation }) {
       super();
-      const { valid, type, value, publicName, publicPhoto } = route.params;
+      const { value, publicName, publicPhoto } = route.params;
       this.state = {
         navigation: navigation,
-        valid: valid,
-        type: type,
+        valid: 'valid',
+        type: 'type',
         value: value,
         publicName: publicName,
         publicPhoto: publicPhoto,
 
       }
-      this.verificarSeTemNome()
+      //this.verificarSeTemNome()
       
       
     }
@@ -66,8 +65,6 @@ export default class LogadoApp extends Component{
                 console.log('not saved public name')
                 //jogar para tela de captura e salvamento do nome e foto
                 this.state.navigation.navigate('ReceberFoto', {
-                  valid: this.state.valid,
-                  type: this.state.type,
                   value: this.state.value,
                   publicName: this.state.publicName,
                   publicPhoto: this.state.publicPhoto,
@@ -85,8 +82,6 @@ export default class LogadoApp extends Component{
           console.log('not saved public name')
           //jogar para tela de captura e salvamento do nome e foto
           this.state.navigation.navigate('ReceberFoto', {
-            valid: this.state.valid,
-            type: this.state.type,
             value: this.state.value,
             publicName: this.state.publicName,
             publicPhoto: this.state.publicPhoto,
@@ -99,7 +94,7 @@ export default class LogadoApp extends Component{
     
     render(){
       return(
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
           <FlatList
             data={DATA}
             renderItem={({item})=>
@@ -125,7 +120,7 @@ export default class LogadoApp extends Component{
             
             
             
-        </SafeAreaView>
+        </View>
         
       );
     }
@@ -133,36 +128,3 @@ export default class LogadoApp extends Component{
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  contact: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'gray',
-    margin: 2,
-    borderRadius: 6
-  },
-  foto: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-  },
-  btnContatosImage: {
-    position: 'absolute',
-    backgroundColor: 'red',
-    width: 70,
-    height: 70,
-    right: 10,
-    bottom: 10,
-    borderRadius: 50
-    
-
-    
-  }
-  
-
-});

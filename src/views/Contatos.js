@@ -1,10 +1,15 @@
-import React, { useEffect ,useCallback, useState, Component } from 'react';
+/**
+ * essa tela aqui é para exibir as conversas na verdade apesar do nome contatos
+ */
+
+import React, { Component } from 'react';
 import {TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import { PermissionsAndroid } from 'react-native';
 //import Contacts from 'react-native-contacts';
 import * as Contacts from 'expo-contacts';
 import { Asset } from 'expo-asset';
+import { styles } from './Styles/ContatosStyle';
 
 var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
@@ -100,33 +105,3 @@ export default class Contatos extends Component{
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  contact: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'gray',
-    margin: 2,
-    borderRadius: 6
-  },
-  foto: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-  },
-  phoneNumber: {
-    marginLeft: 10
-  }
-  
-  
-    
-
-    
-  
-  
-
-});

@@ -1,19 +1,17 @@
-import React, { useCallback, useState, useEffect, Component } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image, Platform, TextInput, requireNativeComponent } from 'react-native'
+import React, { Component } from 'react';
+import { TouchableOpacity, Text, View, Button, Image, Platform, TextInput } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { styles } from './Styles/ReceberFotoStyles';
 
 
 export default class ReceberFoto extends Component {
     constructor( { route, navigation }){
         super();
-        const { valid, type, value, publicName, publicPhoto } = route.params;
+        const { value, publicName, publicPhoto } = route.params;
         this.state = {
             navigation: navigation,
-            valid: valid,
-            type: type,
             value: value,
             publicName: '',// esta vazio porque logico ele sta na tela de inserir o nome e tals
             publicPhoto: ''// esta vazio porque asincronamente esta vindo a imagem default para este state e o usuario ainda pode altereala
@@ -54,7 +52,8 @@ export default class ReceberFoto extends Component {
         
         if (!result.cancelled) {
             this.setState({publicPhoto: result.uri})
-          }
+        }
+
     }
 
     //storing full information this user
@@ -75,8 +74,6 @@ export default class ReceberFoto extends Component {
             
             
             this.state.navigation.navigate('LogadoApp', {
-                valid: this.state.valid,
-                type: this.state.type,
                 value: this.state.value,
                 publicName: this.state.publicName,
                 publicPhoto: this.state.publicPhoto,
@@ -89,7 +86,8 @@ export default class ReceberFoto extends Component {
     
 
     render(){
-        console.log(this.state.publicName)
+        console.log('nome -> ' + this.state.publicName)
+        console.log('Foto -> ' + this.state.publicPhoto)
         return (
             <View style={styles.container}>
                 <View style={styles.container_image_textInput}>
@@ -107,36 +105,3 @@ export default class ReceberFoto extends Component {
         )
     }
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: 'center',
-        padding: 20,
-        paddingTop: 10,
-      },
-    container_image_textInput: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: 'center',
-      padding: 20,
-      paddingTop: 10,
-      flexDirection: 'row'
-    },
-    inputStyle: {
-        fontSize: 40,
-        marginLeft: 10
-    },
-    viewDoBtn: {
-        top: 60
-    },
-    publicPhoto: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        borderWidth: 50,
-    }
-
-});
