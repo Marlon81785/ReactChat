@@ -1,28 +1,17 @@
+/**
+ * essa tela aqui é para exibir as conversas na verdade apesar do nome contatos
+ */
+
 import React, { Component } from 'react';
-import {TouchableOpacity, Text, View, Button, FlatList, Image } from 'react-native'
+import {TouchableOpacity, Text, View, Button, FlatList, Image, SafeAreaView } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './Styles/LogadoAppStyles';
 import { Asset } from 'expo-asset';
+import * as Contacts from 'expo-contacts';
 
 var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Fulano De Tal',
-    image: btnContatosImage,
-
-  },
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28bt',
-    title: 'Fulano De Tal',
-    image: btnContatosImage,
-
-  },
-  
-  
-];
 
 export default class LogadoApp extends Component{
     constructor({ route, navigation }) {
@@ -36,13 +25,27 @@ export default class LogadoApp extends Component{
         publicName: publicName,
         publicPhoto: publicPhoto,
         iconeContatos: '',
-        defaultIconUser: defaultIconUser
+        defaultIconUser: defaultIconUser,
+        contacts: null,
+        contatosComConversa: [      
+        ]
 
       }
-      //this.verificarSeTemNome()
+      this.verificarSeTemNome()
       this.iconeContatos()
-      btnContatosImage = defaultIconUser;
+      this.getAllContactsV2()
+
       
+
+      
+    }
+
+    reloadPage() {
+      this.setState({
+        contacts: null,
+        contatosComConversa: []
+      })
+      this.getAllContactsV2();
     }
 
     iconeContatos = async () => {
@@ -106,27 +109,96 @@ export default class LogadoApp extends Component{
         }
       }
 
+      async getAllContactsV2 () {
+        const { status } = await Contacts.requestPermissionsAsync();
+        if (status === 'granted') {
+          const { data } = await Contacts.getContactsAsync({
+            fields: [Contacts.Fields.PhoneNumbers],
+          });
+  
+          if (data.length > 0) {
+            const contact = data;
+            //this.setState({contacts: contact})
+            //console.log(this.state.contacts)
+            //console.log(contact);
+            contact.map((contato) => {
+              console.log(contato.phoneNumbers[0].number)
+              this.getConversation(contato.phoneNumbers[0].number, contato)
+              
+            })
+            
+          }
+          
+        }
+      
+    }
+
+
+
+    //verify if existics data from phone number valid in use
+    //key from phone number is : '@phoneSaveTeste4
+    getConversation = async (key, contato) => {
+
+      try {
+          const jsonValue = await AsyncStorage.getItem("@".concat(key))
+
+          if(jsonValue != null){
+              console.log("conversa encontrada para o numero: "+ key)
+              //this.setState({conversa: JSON.parse(jsonValue)})
+              //console.log(JSON.parse(jsonValue))
+              this.setState({
+                contatosComConversa: this.state.contatosComConversa.concat(contato)
+              })
+              this.setState({
+                contacts: this.state.contatosComConversa
+              })
+          }else{
+            console.log('nao possui conversa o numero: ' + key)
+            
+          }
+     
+      } catch(e) {
+          // error reading value
+          console.log('not saved conversation for phone number')
+      }
+    }
+
 
     
     render(){
       return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <Button onPress={()=> this.reloadPage()} title="update" ></Button>
+            
           <FlatList
-            data={DATA}
+            data={this.state.contacts}
             renderItem={({item})=>
               (
                 <View style={styles.contact}>
-                  <TouchableOpacity style={styles.contact}>
-                    <Image
-                      style={styles.foto}
-                      source={{uri: item.image}}
-                    >
-                    </Image><Text style={{fontSize: 30, marginLeft: 9}}>{item.title}</Text>
+                  <TouchableOpacity onPress={()=>//alert(item.phoneNumbers[0].number)//
+                    this.state.navigation.navigate('ChatApp', {
+                      phone: item.phoneNumbers[0].number,
+                      name: item.name,
+                    })
+                  }>
+                    <View style={styles.contact}>
+                      <Image
+                        style={styles.foto}
+                        source={{uri: this.state.defaultIconUser}}
+                      >
+                      </Image>
+                      <View>
+                        <Text style={{fontSize: 30, marginLeft: 9}}>{item.name}</Text>
+                        <Text style={styles.phoneNumber}>{/*numero dos contatos*/}</Text>
+
+                      </View>
+                      
+                    </View>
+                    
                   </TouchableOpacity>
                 </View>
               )}
             />
-
             { this.state.iconeContatos != '' &&
             <TouchableOpacity onPress={() => this.state.navigation.navigate('Contatos')} style={styles.btnContatosImage}>
               <Image
@@ -135,10 +207,7 @@ export default class LogadoApp extends Component{
               ></Image>
             </TouchableOpacity>
             }
-            
-            
-            
-        </View>
+        </SafeAreaView>
         
       );
     }

@@ -16,7 +16,7 @@ export default class ReceberFoto extends Component {
             value: value,
             publicName: '',// esta vazio porque logico ele sta na tela de inserir o nome e tals
             publicPhoto: '',// esta vazio porque asincronamente esta vindo a imagem default para este state e o usuario ainda pode altereala
-            defaultIconeUser: ''
+            defaultIconUser: ''
         }
 
         
@@ -30,7 +30,7 @@ export default class ReceberFoto extends Component {
     defaultPhoto = async () => {
         var [{ localUri }] = await Asset.loadAsync(require('../../assets/user.png'));
         console.log(localUri)
-        this.setState({defaultIconeUser: localUri})
+        this.setState({defaultIconUser: localUri})
         this.setState({publicPhoto: localUri})
 
     }
@@ -81,7 +81,7 @@ export default class ReceberFoto extends Component {
                 value: this.state.value,
                 publicName: this.state.publicName,
                 publicPhoto: this.state.publicPhoto,
-                defaultIconeUser: this.state.defaultIconeUser
+                defaultIconUser: this.state.defaultIconUser
 
             })
             

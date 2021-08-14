@@ -8,9 +8,9 @@ export const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: 'gray',
-      margin: 2,
-      borderRadius: 6
+      backgroundColor: '#A7E0FF',
+      borderRadius: 6,
+      borderBottomWidth: .5
     },
     foto: {
       width: 60,

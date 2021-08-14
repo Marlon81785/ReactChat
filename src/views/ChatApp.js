@@ -48,8 +48,6 @@ export default class ChatApp extends Component{
 
     this.getConversation(this.state.contato.phoneNumber)
       
-      
-      
     }
 
     onLayout() {      //tenta descer o scroll para o final
@@ -58,7 +56,7 @@ export default class ChatApp extends Component{
         
     }
 
-    StoreConversation = async (value, key) => { //key is phoone number, key its conversation
+    StoreConversation = async (value, key) => { //value is phone number, key its conversation
         try {
           const jsonValue = JSON.stringify(value)
           await AsyncStorage.setItem("@".concat(key), jsonValue)

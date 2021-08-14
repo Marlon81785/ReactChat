@@ -1,7 +1,6 @@
 /**
- * essa tela aqui é para exibir as conversas na verdade apesar do nome contatos
+ * listando os contatos -> cliccou no contato entra na conversa e salva este link da conversa
  */
-
 import React, { Component } from 'react';
 import {TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
