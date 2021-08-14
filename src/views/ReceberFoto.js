@@ -15,7 +15,8 @@ export default class ReceberFoto extends Component {
             navigation: navigation,
             value: value,
             publicName: '',// esta vazio porque logico ele sta na tela de inserir o nome e tals
-            publicPhoto: ''// esta vazio porque asincronamente esta vindo a imagem default para este state e o usuario ainda pode altereala
+            publicPhoto: '',// esta vazio porque asincronamente esta vindo a imagem default para este state e o usuario ainda pode altereala
+            defaultIconeUser: ''
         }
 
         
@@ -29,6 +30,7 @@ export default class ReceberFoto extends Component {
     defaultPhoto = async () => {
         var [{ localUri }] = await Asset.loadAsync(require('../../assets/user.png'));
         console.log(localUri)
+        this.setState({defaultIconeUser: localUri})
         this.setState({publicPhoto: localUri})
 
     }
@@ -79,6 +81,7 @@ export default class ReceberFoto extends Component {
                 value: this.state.value,
                 publicName: this.state.publicName,
                 publicPhoto: this.state.publicPhoto,
+                defaultIconeUser: this.state.defaultIconeUser
 
             })
             
@@ -98,7 +101,7 @@ export default class ReceberFoto extends Component {
                     <TouchableOpacity
                         onPress={this.pickImage}
                     >
-                        <Image style={{width: 200, height: 200, borderRadius: 20}}
+                        <Image style={{width: 200, height: 200, borderRadius:10}}
                             source={{uri: this.state.publicPhoto}}
                         />
                     </TouchableOpacity>}

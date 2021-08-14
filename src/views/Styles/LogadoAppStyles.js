@@ -9,9 +9,8 @@ export const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: 'gray',
-      margin: 2,
-      borderRadius: 6
+      backgroundColor: '#A7E0FF',
+      borderBottomWidth: .5
     },
     foto: {
       width: 60,
@@ -20,7 +19,6 @@ export const styles = StyleSheet.create({
     },
     btnContatosImage: {
       position: 'absolute',
-      backgroundColor: 'red',
       width: 70,
       height: 70,
       right: 10,

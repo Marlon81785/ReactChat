@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {TouchableOpacity, Text, View, Button, FlatList, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Asset } from 'expo-asset';
 import { styles } from './Styles/LogadoAppStyles';
+import { Asset } from 'expo-asset';
 
 var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
@@ -14,15 +14,20 @@ const DATA = [
     image: btnContatosImage,
 
   },
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28bt',
+    title: 'Fulano De Tal',
+    image: btnContatosImage,
+
+  },
+  
   
 ];
-
-
 
 export default class LogadoApp extends Component{
     constructor({ route, navigation }) {
       super();
-      const { value, publicName, publicPhoto } = route.params;
+      const { value, publicName, publicPhoto, defaultIconUser } = route.params;
       this.state = {
         navigation: navigation,
         valid: 'valid',
@@ -30,12 +35,23 @@ export default class LogadoApp extends Component{
         value: value,
         publicName: publicName,
         publicPhoto: publicPhoto,
+        iconeContatos: '',
+        defaultIconUser: defaultIconUser
 
       }
       //this.verificarSeTemNome()
-      
+      this.iconeContatos()
+      btnContatosImage = defaultIconUser;
       
     }
+
+    iconeContatos = async () => {
+      var [{ localUri }] = await Asset.loadAsync(require('../../assets/contact-book.png'));
+      console.log(localUri)
+      this.setState({iconeContatos: localUri})
+
+    }
+    
 
     clearAll = async () => {
       try {
@@ -103,7 +119,7 @@ export default class LogadoApp extends Component{
                   <TouchableOpacity style={styles.contact}>
                     <Image
                       style={styles.foto}
-                      source={{uri: btnContatosImage}}
+                      source={{uri: item.image}}
                     >
                     </Image><Text style={{fontSize: 30, marginLeft: 9}}>{item.title}</Text>
                   </TouchableOpacity>
@@ -111,12 +127,14 @@ export default class LogadoApp extends Component{
               )}
             />
 
+            { this.state.iconeContatos != '' &&
             <TouchableOpacity onPress={() => this.state.navigation.navigate('Contatos')} style={styles.btnContatosImage}>
               <Image
               style={{width: 70, height: 70}}
-                source={{uri: btnContatosImage}}
+                source={{uri: this.state.iconeContatos}}
               ></Image>
             </TouchableOpacity>
+            }
             
             
             
