@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Asset } from 'expo-asset';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './Styles/ReceberFotoStyles';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class ReceberFoto extends Component {
@@ -29,6 +30,7 @@ export default class ReceberFoto extends Component {
         var [{ localUri }] = await Asset.loadAsync(require('../../assets/user.png'));
         console.log(localUri)
         this.setState({publicPhoto: localUri})
+
     }
 
     ReqPermiss = async () => {
@@ -89,18 +91,38 @@ export default class ReceberFoto extends Component {
         console.log('nome -> ' + this.state.publicName)
         console.log('Foto -> ' + this.state.publicPhoto)
         return (
-            <View style={styles.container}>
-                <View style={styles.container_image_textInput}>
+            <ScrollView style={styles.container}>
                 
-                { this.state.publicPhoto != '' && <TouchableOpacity onPress={this.pickImage}><Image style={styles.publicPhoto} source={{uri: this.state.publicPhoto}} ></Image></TouchableOpacity>}
-                
-                <TextInput onChangeText={text => this.setState({publicName: text})} style={styles.inputStyle} placeholder="Type your name"></TextInput>
+                <View style={styles.TouchableOpacityPhoto}>
+                    { this.state.publicPhoto != '' &&
+                    <TouchableOpacity
+                        onPress={this.pickImage}
+                    >
+                        <Image style={{width: 200, height: 200, borderRadius: 20}}
+                            source={{uri: this.state.publicPhoto}}
+                        />
+                    </TouchableOpacity>}
                 </View>
-                <View>
-                    <Button onPress={() => this.validarForm()} title="Continue"></Button>
+                
+                
+                <View style={styles.container_image_textInput}>
+                    <TextInput
+                        onChangeText={text => this.setState({publicName: text})} 
+                        style={styles.inputStyle} placeholder="Escreva seu nome"
+                    />
+
                 </View>
 
-            </View>
+                <View>
+                    <Button 
+                        onPress={() => this.validarForm()} 
+                        title="Continue"
+                    />
+
+                        
+                </View>
+
+            </ScrollView>
             
         )
     }

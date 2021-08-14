@@ -2,23 +2,30 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: 'center',
-        padding: 20,
-        paddingTop: 10,
-      },
-    container_image_textInput: {
       flex: 1,
-      alignItems: "center",
-      justifyContent: 'center',
       padding: 20,
       paddingTop: 10,
-      flexDirection: 'row'
+        
+    },
+    TouchableOpacityPhoto: {
+        alignItems: "center",
+        marginBottom: 5
+
+    },
+    container_image_textInput: {
+      flex: .8,
+      alignItems: "center",
+      justifyContent: 'center',
+      flexDirection: 'row',
     },
     inputStyle: {
-        fontSize: 40,
-        marginLeft: 10
+        fontSize: 25,
+        marginLeft: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: 'red',
+        borderBottomLeftRadius: 3,
+        borderBottomRightRadius: 3,
+        marginBottom: 30
     },
     viewDoBtn: {
         top: 60

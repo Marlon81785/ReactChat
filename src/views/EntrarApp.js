@@ -7,7 +7,7 @@ import { styles } from "./Styles/EntrarStyles";
 export default class EntrarApp extends Component {
   constructor({ route, navigation }) {
     super();
-    //this.storeData(null) //REMOVE ! THIS IS FOR TEST
+    this.storeData(null) //REMOVE ! THIS IS FOR TEST
     this.getData()
 
     this.state = {
