@@ -58,7 +58,7 @@ export default class ReceberCodigoConfirmar extends Component {
     }
 
     render(){
-        //this.validateSecretCode()//remover isso esta passando na autenticação de usuario
+        //this.validateSecretCode()//
        
         return (
             <View style={styles.container}>

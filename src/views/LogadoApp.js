@@ -143,7 +143,7 @@ export default class LogadoApp extends Component{
           const jsonValue = await AsyncStorage.getItem("@".concat(key))
 
           if(jsonValue != null){
-              console.log("conversa encontrada para o numero: "+ key)
+              console.log("conversa encontrada para o numero: "+ key)//key is a number
               //this.setState({conversa: JSON.parse(jsonValue)})
               //console.log(JSON.parse(jsonValue))
               this.setState({
@@ -179,6 +179,7 @@ export default class LogadoApp extends Component{
                     this.state.navigation.navigate('ChatApp', {
                       phone: item.phoneNumbers[0].number,
                       name: item.name,
+                      value: this.state.value // telefone do usuario do app
                     })
                   }>
                     <View style={styles.contact}>
@@ -200,7 +201,7 @@ export default class LogadoApp extends Component{
               )}
             />
             { this.state.iconeContatos != '' &&
-            <TouchableOpacity onPress={() => this.state.navigation.navigate('Contatos')} style={styles.btnContatosImage}>
+            <TouchableOpacity onPress={() => this.state.navigation.navigate('Contatos', {value: this.state.value})} style={styles.btnContatosImage}>
               <Image
               style={{width: 70, height: 70}}
                 source={{uri: this.state.iconeContatos}}

@@ -58,9 +58,8 @@ export default class EntrarApp extends Component {
   }
 
   confirmarTelefone() {
-
     this.state.navigation.navigate('ReceberCodigoConfirmar', {
-      value: '31999999999'
+      value: this.state.value
     })
   }
   
@@ -71,6 +70,8 @@ export default class EntrarApp extends Component {
         <Text>Insira seu número de telefone</Text>
         <TextInput style={styles.input}
           placeholder='Ex.:  31999999999'
+          onChangeText={ text => this.setState({value: text})}
+          keyboardType="numeric"
         />
         <Button
           title='Continuar'

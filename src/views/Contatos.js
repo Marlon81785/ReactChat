@@ -19,8 +19,9 @@ export default class Contatos extends Component{
 
     constructor({route, navigation }) {
       super();
-
+      const { value } = route.params;
       this.state = {
+        value: value,
         navigation: navigation,
         contacts: []
       }
@@ -69,6 +70,7 @@ export default class Contatos extends Component{
                     this.state.navigation.navigate('ChatApp', {
                       phone: item.phoneNumbers[0].number,
                       name: item.name,
+                      value: this.state.value
                     })
                   }>
                     <View style={styles.contact}>

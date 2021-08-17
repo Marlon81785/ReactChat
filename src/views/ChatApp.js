@@ -10,8 +10,10 @@ export default class ChatApp extends Component{
 
     constructor({route, navigation}) {
       super();
-      const { phone, name } = route.params;
+      const { phone, name, value } = route.params;
       this.state = {
+        value: value,
+        conectado: null,
         navigation: navigation,
         count: null,//contador de numero de mensagens
         messageInputTemp: null, //usuario digitar ficara aqui temporariamente
@@ -25,10 +27,11 @@ export default class ChatApp extends Component{
             
             {
                 'id': '0',
-                'type': 'received',
-                'name': 'Bão ?',
+                'type': 'received',//defina o lado esquerdo ou direito no front end
+                'name': 'Bão ?',           //name is message
                 'statusEnvio': 'enviada',
-                'statusDestino': 'recebido',
+                'statusDestino': 'recebido',// - - - - - - - - - - -- -  - - -  - - --
+                'dateTime': null
             },
             
             /*exempple the structure
@@ -44,11 +47,91 @@ export default class ChatApp extends Component{
             
             
         ]
+        
     }
-
     this.getConversation(this.state.contato.phoneNumber)
+    this.testarConexao()
+    //alert(this.state.value)
       
     }
+
+    findMessage() {
+        var url2 = "http://192.168.0.103/my-api/find.php";
+
+        fetch(url2,{
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json', 
+        },
+
+          body: JSON.stringify({
+
+            'myPhoneNumber': this.state.value
+
+          })
+
+        })
+                
+        .then((response) => response.json())
+        .then((res) => {
+        
+          //alert(res.message);
+          //console.log("\n\n----------------- MENSAGENS -----------------\n" +
+          //res.message +"\n --------------END MENSAGENS --------------\n")
+          if(res.message == '0'){
+              return 0
+          }else{
+            res.message.forEach(element => {
+
+                console.log("\n\n\n+elements\n-> "+element.phoneSend + element.mensagem+"\n")
+  
+                // removendo a mascara deixando o numero limpo
+                var r = this.state.contato.phoneNumber.replace('-','')
+                    r = r.replace('(', '');
+                    r = r.replace(')', '');
+                    r = r.replace(' ', '');
+                
+                if(element.phoneSend === r){
+  
+                  var date = new Date()
+                  var cont = this.state.contacts.length+1
+                  var newMsg = {
+                      'id': cont.toString(),
+                      'phone': this.state.contato.phoneNumber,
+                      'type': 'received',//define o lado da mensagem no front end
+                      'name': element.mensagem,
+                      'statusEnvio': 'recebido',//não permitir enviar mensagem senao conectado no server depois mudo isso
+                      //'statusDestino': 'recebido',
+                      'dateTime': date
+                  }
+          
+                  this.setState({
+                      contacts: this.state.contacts.concat(newMsg)
+  
+                  })
+  
+                  this.onLayout()
+                  
+                  
+              
+                }else{
+                    alert('element.PhoneSend is != phoneNumber')
+                    
+                    
+                }
+                
+            });
+
+          }
+          
+        
+        
+        })
+
+
+    }
+
 
     onLayout() {      //tenta descer o scroll para o final
         this.list.scrollToEnd({animated: true})
@@ -66,19 +149,87 @@ export default class ChatApp extends Component{
         }
     }
 
+    testarConexao = () => {
+        //só testar se ta conectado
+        //perceba que tem que ser o IP da maquina onde esta o server
+        //não é localhost porque o device esta emulado!!!!!
+
+        const url1 = 'http://192.168.0.103/my-api/index.php';
+    
+    
+        
+        fetch(url1)
+      
+          .then((response) => response.json())
+          .then((res) => {
+              if(res.status === "Banco de dados conectado"){
+                  this.setState({conectado: true})
+              }else{
+                  alert(res.status)
+              }
+            //alert(res.status)
+            console.log(res.status)
+        })
+        
+    
+    }
+
     getMessageFromTextInputUser(){
+        this.testarConexao()
+        console.log(this.state.conectado)
+
         if(this.state.messageInputTemp === null){
             return 0
         }else
             {
+                var date = new Date()
                 var cont = this.state.contacts.length+1
                 var newMsg = {
                     'id': cont.toString(),
-                    'type': 'send',
+                    'phone': this.state.contato.phoneNumber,
+                    'type': 'send',//define o lado da mensagem no front end
                     'name': this.state.messageInputTemp,
-                    'statusEnvio': 'enviada',
-                    'statusDestino': 'recebido',
+                    'statusEnvio': 'enviado',//não permitir enviar mensagem senao conectado no server depois mudo isso
+                    //'statusDestino': 'recebido',
+                    'dateTime': date
                 }
+
+                //----------- momento em que envia para o servidor ----------
+
+                    //experimental
+                    var url2 = "http://192.168.0.103/my-api/saveMsg.php";
+
+                    fetch(url2,{
+                      method: 'POST',
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json', 
+                    },
+                    
+                      body: JSON.stringify({
+                          
+                        'phone': this.state.contato.phoneNumber,
+                        'phoneSend': this.state.value,
+                        'statusEnvio': 'enviado',
+                        'dateTime': date,
+                        'name': this.state.messageInputTemp,
+                        
+
+                      })
+                      
+                    })
+                
+                    .then((response) => response.json())
+                    .then((res) => {
+                      
+                      //alert(res.message);
+                      
+                      
+                    })
+
+
+
+                //-----------------------------------------------------------
         
         
         
@@ -128,13 +279,22 @@ export default class ChatApp extends Component{
         }
       
         console.log('Done.')
-      }
+    }
+
+    componentDidMount = () => {
+        setInterval(() => {// a cada 1 segundo procurando por mensagens novas
+            this.findMessage();
+            console.log("find\n")
+        }, 1000);
+    }
     
     
     
     
     render(){
-        console.log(this.state.contacts)
+        //console.log(this.state.contacts)
+        
+
         setTimeout(()=>{
             this.onLayout()
             this.StoreConversation(this.state.contacts, this.state.contato.phoneNumber)
