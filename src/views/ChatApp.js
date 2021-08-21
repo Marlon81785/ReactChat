@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Button, FlatList, SafeAreaView, StatusBar, Image } from 'react-native'
+import {TouchableOpacity, Text, View, Button, FlatList, SafeAreaView, Image, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './Styles/ChatAppStyles';
@@ -51,9 +51,7 @@ export default class ChatApp extends Component{
     }
     this.getConversation(this.state.contato.phoneNumber)
     this.testarConexao()
-    //alert(this.state.value)
-	this.clearAll()
-      
+	//this.clearAll()
     }
 
     findMessage() {
@@ -272,7 +270,7 @@ export default class ChatApp extends Component{
         }
     }
 
-    clearAll = async () => {
+    clearAll = async () => {// deletar todos os dados salvos localmente no aparelho
         try {
           await AsyncStorage.clear()
         } catch(e) {
@@ -283,12 +281,46 @@ export default class ChatApp extends Component{
     }
 
     componentDidMount = () => {
+        this.setHeader()
         setInterval(() => {// a cada 1 segundo procurando por mensagens novas
             this.findMessage();
             console.log("find\n")
         }, 1000);
     }
+
     
+    setHeader = () => {
+        this.state.navigation.setOptions({
+            title: false,
+            headerStyle: styles.header,
+            headerLeft: false,
+                
+                
+            headerLeft: () => (
+                <View style={styles.contato}>
+                    <TouchableOpacity
+                        onPress={() => this.state.navigation.navigate('LogadoApp')}
+                    >
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 5,
+                            marginRight: 25,
+                            color: 'blue',
+                            fontWeight: 'bold'
+                        }}
+                        >{'< voltar'}</Text>
+                    </TouchableOpacity>
+                    <Image
+                        style={styles.foto}
+                        source={{uri: btnContatosImage}}
+                    >
+                    </Image>
+                    <Text style={styles.contatoNome}>{this.state.contato.nameContact}</Text>
+                  
+              </View>
+            )
+        })
+    }
     
     
     
@@ -305,15 +337,6 @@ export default class ChatApp extends Component{
 
       return(
             <View style={styles.masterView}>
-              <View style={styles.contato}>
-                <Image
-                    style={styles.foto}
-                    source={{uri: btnContatosImage}}
-                >
-                </Image>
-                <Text style={styles.contatoNome}>{this.state.contato.nameContact}</Text>
-                <Text>   {this.state.contato.phoneNumber}</Text>
-              </View>
 
                 <SafeAreaView onLayout={() => this.onLayout()} style={styles.container}>
                 
@@ -361,16 +384,29 @@ export default class ChatApp extends Component{
                         />
 
                 </SafeAreaView>
-                <View style={styles.inputView}>
-                    <TextInput
-                    value={this.state.messageInputTemp}
-                    onChangeText={(text)=>this.setState({messageInputTemp: text})}
-                    multiline
-                    style={styles.inputMessage} placeholder="  type message"></TextInput>
-                    <TouchableOpacity style={styles.btnSendMessage} title=">">
-                        <Button onPress={()=>this.getMessageFromTextInputUser()} title="->"></Button>
-                    </TouchableOpacity>
-                </View>
+                <KeyboardAvoidingView //esse bichinho aqui ajuda no ios a não tampar os outros componentes importantes como o input por exemplo
+                    behavior={ Platform.OS === "ios" ? "padding" : null }
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+                    
+                    >
+                    <ScrollView>
+                        <View style={styles.inputView}>
+                            <TextInput
+                                value={this.state.messageInputTemp}
+                                onChangeText={(text)=>this.setState({messageInputTemp: text})}
+                                multiline
+                                style={styles.inputMessage} placeholder="  type message">
+                            </TextInput>
+                            <TouchableOpacity
+                                onPress={()=>this.getMessageFromTextInputUser()}
+                                style={styles.btnSendMessage} title=">">
+                                <Text style={{color: 'white', fontSize: 25}}>{'->'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                    </ScrollView>
+                    
+                </KeyboardAvoidingView>
 
             </View>
         

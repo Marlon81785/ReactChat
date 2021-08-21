@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       backgroundColor: 'gray',
       margin: 5,
-      borderRadius: 5
+      borderRadius: 5,
       
     },
     contact: {
@@ -27,33 +27,48 @@ export const styles = StyleSheet.create({
       borderRadius: 6
     },
     foto: {
-      width: 60,
-      height: 60,
+      width: 50,
+      height: 50,
       borderRadius: 50,
+    },
+    header: {
+      //header chat
+      //backgroundColor: 'pink',
+      
+      
     },
     contato: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 5,
-        marginBottom: 2,
+        marginBottom: 10,
+        justifyContent: "flex-start",
+        
         
       },
     contatoNome: {
+        flexDirection: "row",
+        justifyContent: 'flex-start',
         marginLeft: 15,
-        fontSize: 30
+        fontSize: 20
     },
     btnSendMessage: {
         flex: .5,
-        position: 'relative',
         right: 0,
         width: 80,
+        height: 40,
         borderRadius: 60,
+        backgroundColor: 'black',
+        justifyContent: "center",
+        alignItems: "center",
+        
         
     },
     inputMessage: {
       flex: 1,  
       position: 'relative',
-      fontSize: 20
+      fontSize: 20,
+      
+      
   
     },
     messageSend: {
@@ -68,7 +83,8 @@ export const styles = StyleSheet.create({
     textmessageSend: {
         flex: 1,
         fontSize: 18,
-        alignItems: 'center'
+        alignItems: 'center',
+        color: 'white'
     }
     
       

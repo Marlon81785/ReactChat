@@ -12,7 +12,6 @@ import * as Contacts from 'expo-contacts';
 var btnContatosImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
 
 
-
 export default class LogadoApp extends Component{
     constructor({ route, navigation }) {
       super();
@@ -185,7 +184,7 @@ export default class LogadoApp extends Component{
                     <View style={styles.contact}>
                       <Image
                         style={styles.foto}
-                        source={{uri: this.state.defaultIconUser}}
+                        source={{uri: btnContatosImage}}
                       >
                       </Image>
                       <View>
