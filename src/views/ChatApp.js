@@ -52,6 +52,7 @@ export default class ChatApp extends Component{
     this.getConversation(this.state.contato.phoneNumber)
     this.testarConexao()
     //alert(this.state.value)
+	this.clearAll()
       
     }
 

@@ -17,55 +17,17 @@ import ReceberFoto from './src/views/ReceberFoto';
 
 const Stack = createStackNavigator();
 
-//rotas de navegação
-/*
-const AppNavigator = createStackNavigator(
-  {
-    EntrarApp: {
-      screen: EntrarApp,
-      navigationOptions:  { title: 'Configurar sua conta'},
-    },
-    LogadoApp: {
-      screen: LogadoApp,
-      navigationOptions: { title: 'Conversas', headerLeft: null },
-    },
-    ReceberCodigoConfirmar: {
-      screen: ReceberCodigoConfirmar,
-      navigationOptions: { title: 'Confirmação', headerLeft: null , headerRight: null },
-    },
-    ReceberFoto: {
-      screen: ReceberFoto,
-      navigationOptions: { title: 'Configurações da conta'}
-    },
-    Contatos: {
-      screen: Contatos,
-      navigationOptions: { title: 'Contatos' }
-    },
-    ChatApp: {
-      screen: ChatApp,
-      navigationOptions: { headerShown: false },
-      
-    }
-  },
-  {
-    initialRouteName: 'EntrarApp'
-  }
-);
-const AppContainer = createAppContainer (AppNavigator);
-*/
-
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="EntrarApp" component={EntrarApp} />
-        <Stack.Screen name="LogadoApp" component={LogadoApp} />
+        <Stack.Screen name="LogadoApp" component={LogadoApp} options={{ title: 'Conversas', headerLeft: false }} />
         <Stack.Screen name="ReceberCodigoConfirmar" component={ReceberCodigoConfirmar} />
         <Stack.Screen name="ReceberFoto" component={ReceberFoto} />
         <Stack.Screen name="Contatos" component={Contatos} />
-        <Stack.Screen name="ChatApp" component={ChatApp} />
-        
+        <Stack.Screen name="ChatApp" component={ChatApp} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
